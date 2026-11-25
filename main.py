@@ -15,10 +15,19 @@ TEXT = (
 )
 
 
+def validate(text: str) -> bool:
+    """True when text is a valid entry: one non-blank line, 1-200 chars."""
+    if not isinstance(text, str):
+        return False
+    if not 1 <= len(text) <= 200:
+        return False
+    if "\n" in text or "\r" in text:
+        return False
+    return bool(text.strip())
+
+
 def main() -> None:
-    assert 1 <= len(TEXT) <= 200, "entry must be 1-200 characters"
-    assert "\n" not in TEXT and "\r" not in TEXT, "entry must be a single line"
-    assert TEXT.strip(), "entry must not be only whitespace"
+    assert validate(TEXT), "entry must be a valid single line of 1-200 characters"
     os.makedirs("/output", exist_ok=True)
     with open("/output/entry.txt", "w", encoding="utf-8") as f:
         f.write(TEXT)
